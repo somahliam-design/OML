@@ -1,0 +1,597 @@
+/* Global Styles */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Poppins:wght@400;600;700&display=swap');
+
+:root {
+    --bg-color: #0a0a0a;
+    --text-color: #f0f0f0;
+    --accent-color: #e50914;
+    /* Netflix-ish red, but chic */
+    --card-bg: #1a1a1a;
+    --font-title: 'Poppins', sans-serif;
+    /* Modern Font */
+    --font-serif: 'Playfair Display', serif;
+    --font-body: 'Inter', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Typography */
+h1,
+h2,
+h3 {
+    font-family: var(--font-title);
+    font-weight: 700;
+}
+
+.text-red {
+    color: var(--accent-color);
+}
+
+/* Layout */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Homepage Specifics */
+.hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 4rem 1rem;
+}
+
+.site-title {
+    font-size: 5rem;
+    margin-bottom: 0.5rem;
+    letter-spacing: -2px;
+    font-family: var(--font-serif);
+    /* Keep serif for main logo/title if desired, or switch to Poppins too. User said "typographie pour le nom des films", so site title can stay or change. Let's keep site title classy serif, movie titles modern. */
+}
+
+.site-subtitle {
+    font-size: 1.5rem;
+    font-family: var(--font-body);
+    font-weight: 300;
+    margin-bottom: 3rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.memoji-container {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.memoji {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+    /* border: 2px solid var(--card-bg); */
+    transition: transform 0.3s ease;
+}
+
+.memoji:hover {
+    transform: scale(1.1);
+}
+
+.intro-text {
+    max-width: 700px;
+    font-size: 1.1rem;
+    color: #ccc;
+    margin-bottom: 4rem;
+}
+
+.intro-text p {
+    margin-bottom: 1.5rem;
+}
+
+.enter-btn {
+    display: inline-block;
+    padding: 1rem 2.5rem;
+    background-color: transparent;
+    border: 1px solid var(--text-color);
+    color: var(--text-color);
+    font-family: var(--font-title);
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.enter-btn:hover {
+    background-color: var(--text-color);
+    color: var(--bg-color);
+}
+
+/* Movie List Page */
+.header {
+    padding: 2rem 0;
+    text-align: center;
+    border-bottom: 1px solid #333;
+    margin-bottom: 2rem;
+}
+
+.header h1 {
+    font-size: 2.5rem;
+    font-family: var(--font-serif);
+}
+
+.controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.search-bar {
+    padding: 0.8rem;
+    border-radius: 4px;
+    border: 1px solid #333;
+    background: var(--card-bg);
+    color: white;
+    width: 300px;
+}
+
+.add-btn {
+    padding: 0.8rem 1.5rem;
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.movie-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+}
+
+@media (max-width: 1024px) {
+    .movie-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .movie-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .site-title {
+        font-size: 3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .movie-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.movie-card {
+    background: var(--card-bg);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    position: relative;
+}
+
+.movie-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+}
+
+.movie-poster {
+    width: 100%;
+    aspect-ratio: 2/3;
+    object-fit: cover;
+}
+
+.movie-info {
+    padding: 1rem;
+}
+
+.movie-title {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-family: var(--font-title);
+    /* Poppins */
+}
+
+/* Modal */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.modal-content {
+    background: var(--card-bg);
+    width: 90%;
+    max-width: 1000px;
+    max-height: 90vh;
+    overflow-y: auto;
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    /* Reduced poster column width */
+    gap: 1.5rem;
+    /* Reduced gap */
+    padding: 1.5rem;
+    /* Reduced padding */
+    border-radius: 12px;
+    position: relative;
+}
+
+@media (max-width: 768px) {
+    .modal-content {
+        grid-template-columns: 1fr;
+        padding: 0.5rem;
+        gap: 0.5rem;
+        display: flex;
+        flex-direction: column;
+        max-height: 95vh;
+    }
+
+    .modal-left {
+        display: block;
+        width: 100%;
+        /* Full width for button */
+        margin: 0;
+        flex-shrink: 0;
+        text-align: center;
+    }
+
+    #modalPoster {
+        display: none;
+        /* Hide poster on mobile */
+    }
+
+    .modal-left .btn-save {
+        padding: 0.3rem;
+        margin-top: 0;
+        font-size: 0.8rem;
+        width: auto;
+        /* Allow it to be smaller */
+        display: inline-block;
+    }
+
+    .modal-left .btn-text {
+        display: none;
+        /* Hide text on mobile */
+    }
+
+    .modal-details {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .modal-details h2 {
+        font-size: 1rem;
+        /* Reduced from 1.2rem */
+        margin-bottom: 0.1rem;
+        /* Reduced margin */
+        text-align: center;
+        white-space: normal;
+        /* Allow wrapping */
+        overflow: visible;
+        text-overflow: clip;
+        line-height: 1.1;
+        /* Tighter line height */
+    }
+
+    .trailer-container {
+        padding-bottom: 0;
+        height: 40px;
+        /* Extremely reduced height */
+        margin-bottom: 0.2rem;
+        /* Reduced margin */
+        flex-shrink: 0;
+    }
+
+    .trailer-placeholder p {
+        font-size: 0.7rem;
+        /* Smaller text */
+        margin: 0;
+    }
+
+    .rating-container {
+        margin-bottom: 0.2rem;
+        /* Reduced margin */
+        display: flex;
+        flex-direction: column;
+        /* Stack vertically */
+        align-items: center;
+        gap: 0;
+        /* No gap */
+        flex-shrink: 0;
+    }
+
+    .rating-row {
+        gap: 0.1rem;
+        line-height: 1;
+    }
+
+    .rating-label {
+        font-size: 0.6rem;
+        /* Reduced from 0.7rem */
+        width: auto;
+        margin-right: 0.1rem;
+    }
+
+    .star-rating {
+        font-size: 0.6rem;
+        /* Reduced from 0.7rem */
+        gap: 0.1rem;
+    }
+
+    .tabs-nav {
+        margin-bottom: 0.2rem;
+        /* Reduced margin */
+        justify-content: space-between;
+        flex-shrink: 0;
+        gap: 0.1rem;
+        /* Reduced gap */
+    }
+
+    .tab-btn {
+        padding: 0.2rem;
+        /* Reduced padding */
+        font-size: 0.6rem;
+        /* Reduced font size */
+        flex-grow: 1;
+        text-align: center;
+        white-space: nowrap;
+        /* Prevent wrapping inside button */
+        letter-spacing: -0.5px;
+        /* Tighter spacing */
+    }
+
+    .tab-content {
+        overflow-y: auto;
+        flex-grow: 1;
+        font-size: 0.8rem;
+        /* Reduced from 0.9rem */
+        padding-bottom: 1rem;
+    }
+
+    .section-title {
+        font-size: 0.9rem;
+        /* Reduced from 1rem */
+        margin-top: 0.5rem;
+        margin-bottom: 0.2rem;
+    }
+}
+
+.close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.modal-poster {
+    width: 100%;
+    border-radius: 8px;
+}
+
+.modal-details h2 {
+    font-size: 1.8rem;
+    /* Reduced from 2.5rem */
+    margin-bottom: 1rem;
+    color: var(--accent-color);
+    font-family: var(--font-title);
+}
+
+.section-title {
+    font-size: 1.2rem;
+    color: #888;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* 5 Star Rating */
+.rating-container {
+    margin-bottom: 1.5rem;
+}
+
+.rating-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.rating-label {
+    font-weight: bold;
+    font-size: 1.2rem;
+    width: 30px;
+    color: var(--accent-color);
+}
+
+.star-rating {
+    display: flex;
+    gap: 0.2rem;
+    font-size: 1.5rem;
+    color: #444;
+    cursor: pointer;
+}
+
+.star-rating .star {
+    transition: color 0.2s;
+}
+
+.star-rating .star.filled {
+    color: #ffd700;
+    /* Gold */
+}
+
+.star-rating .star:hover {
+    color: #ffe066;
+}
+
+/* Tabs System */
+.tabs-nav {
+    display: flex;
+    border-bottom: 1px solid #333;
+    margin-bottom: 1.5rem;
+    margin-top: 1rem;
+}
+
+.tab-btn {
+    padding: 1rem 1.5rem;
+    background: none;
+    border: none;
+    color: #888;
+    font-family: var(--font-title);
+    font-size: 1rem;
+    cursor: pointer;
+    position: relative;
+    transition: color 0.3s;
+}
+
+.tab-btn.active {
+    color: var(--accent-color);
+    font-weight: 600;
+}
+
+.tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--accent-color);
+}
+
+.tab-content {
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.trailer-container {
+    margin-top: 0;
+    /* Adjusted for tab layout */
+    position: relative;
+    padding-bottom: 56.25%;
+    /* 16:9 */
+    height: 0;
+    margin-bottom: 2rem;
+    background: #000;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.trailer-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Edit/Add Form */
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 0.8rem;
+    background: #333;
+    border: 1px solid #444;
+    color: white;
+    border-radius: 4px;
+}
+
+.btn-save {
+    background: var(--accent-color);
+    color: white;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    width: 100%;
+    margin-top: 1rem;
+}

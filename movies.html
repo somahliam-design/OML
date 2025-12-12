@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OML - La Collection</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <header class="header">
+            <h1><a href="index.html">OML</a></h1>
+            <p class="text-red">Outdated.Movie.List</p>
+        </header>
+
+        <div class="controls">
+            <input type="text" id="searchInput" class="search-bar" placeholder="Rechercher un film...">
+            <button id="addMovieBtn" class="add-btn"><i class="fas fa-plus"></i> Ajouter un film</button>
+        </div>
+
+        <div id="movieGrid" class="movie-grid">
+            <!-- Movies will be injected here by JS -->
+        </div>
+    </div>
+
+    <!-- Movie Detail Modal -->
+    <div id="movieModal" class="modal-overlay">
+        <div class="modal-content">
+            <button id="closeModal" class="close-btn">&times;</button>
+
+            <div class="modal-left">
+                <img id="modalPoster" src="" alt="" class="modal-poster">
+                <button id="editMovieBtn" class="btn-save" style="margin-top: 1rem; width: 100%;">
+                    <i class="fas fa-edit"></i> <span class="btn-text">Modifier</span>
+                </button>
+            </div>
+
+            <div class="modal-details">
+                <h2 id="modalTitle">Titre du Film</h2>
+
+                <div id="trailerContainer" class="trailer-container">
+                    <!-- Iframe injected here -->
+                </div>
+
+                <div class="rating-container">
+                    <div class="rating-row">
+                        <span class="rating-label">O</span>
+                        <div class="star-rating" id="starRatingO" data-person="O">
+                            <i class="far fa-star star" data-value="1"></i>
+                            <i class="far fa-star star" data-value="2"></i>
+                            <i class="far fa-star star" data-value="3"></i>
+                            <i class="far fa-star star" data-value="4"></i>
+                            <i class="far fa-star star" data-value="5"></i>
+                        </div>
+                    </div>
+                    <div class="rating-row">
+                        <span class="rating-label">M</span>
+                        <div class="star-rating" id="starRatingM" data-person="M">
+                            <i class="far fa-star star" data-value="1"></i>
+                            <i class="far fa-star star" data-value="2"></i>
+                            <i class="far fa-star star" data-value="3"></i>
+                            <i class="far fa-star star" data-value="4"></i>
+                            <i class="far fa-star star" data-value="5"></i>
+                        </div>
+                    </div>
+                    <div class="rating-row">
+                        <span class="rating-label">L</span>
+                        <div class="star-rating" id="starRatingL" data-person="L">
+                            <i class="far fa-star star" data-value="1"></i>
+                            <i class="far fa-star star" data-value="2"></i>
+                            <i class="far fa-star star" data-value="3"></i>
+                            <i class="far fa-star star" data-value="4"></i>
+                            <i class="far fa-star star" data-value="5"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tabs-nav">
+                    <button class="tab-btn active" data-tab="details">Infos</button>
+                    <button class="tab-btn" data-tab="quotes">Répl.</button>
+                    <button class="tab-btn" data-tab="music">Audio</button>
+                    <button class="tab-btn" data-tab="comments">Avis</button>
+                </div>
+
+                <div id="tab-details" class="tab-content active">
+                    <div class="section-title">Acteurs</div>
+                    <p id="modalActors">...</p>
+
+                    <div class="section-title">Plateformes</div>
+                    <p id="modalPlatforms">...</p>
+                </div>
+
+                <div id="tab-quotes" class="tab-content">
+                    <div class="section-title">Répliques</div>
+                    <div id="modalQuotes"></div>
+                </div>
+
+                <div id="tab-music" class="tab-content">
+                    <div class="section-title">Musique</div>
+                    <div id="modalMusic"></div>
+                </div>
+
+                <div id="tab-comments" class="tab-content">
+                    <div class="section-title">Commentaires</div>
+                    <p id="modalComments">...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Modal -->
+    <div id="editModal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 600px; display: block;">
+            <button id="closeEditModal" class="close-btn">&times;</button>
+            <h2 id="editModalTitle">Ajouter/Modifier</h2>
+
+            <form id="movieForm">
+                <input type="hidden" id="editMovieId">
+
+                <div class="form-group">
+                    <label>Titre</label>
+                    <input type="text" id="editTitle" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Affiche (URL ou Fichier local)</label>
+                    <input type="text" id="editPosterUrl" placeholder="Nom du fichier dans assets/ (ex: matrix.jpg)">
+                    <!-- File input for local upload simulation -->
+                    <input type="file" id="editPosterFile" accept="image/*" style="margin-top: 0.5rem;">
+                </div>
+
+                <div class="form-group">
+                    <label>Bande Annonce (Lien YouTube)</label>
+                    <input type="text" id="editTrailer" placeholder="https://www.youtube.com/watch?v=...">
+                </div>
+
+                <div class="form-group">
+                    <label>Musique (Fichier Audio)</label>
+                    <input type="file" id="editMusicFile" accept="audio/*">
+                    <input type="hidden" id="editMusicData">
+                    <p id="editMusicStatus" style="font-size: 0.8rem; color: #888; margin-top: 0.5rem;"></p>
+                </div>
+
+                <div class="form-group">
+                    <label>Acteurs</label>
+                    <input type="text" id="editActors">
+                </div>
+
+                <div class="form-group">
+                    <label>Notes (0-5)</label>
+                    <div style="display: flex; gap: 1rem;">
+                        <input type="number" id="editRatingO" placeholder="O" min="0" max="5">
+                        <input type="number" id="editRatingM" placeholder="M" min="0" max="5">
+                        <input type="number" id="editRatingL" placeholder="L" min="0" max="5">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Répliques (séparées par #)</label>
+                    <textarea id="editQuotes" rows="3"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Plateformes</label>
+                    <input type="text" id="editPlatforms" placeholder="Netflix, Prime...">
+                </div>
+
+                <div class="form-group">
+                    <label>Commentaire</label>
+                    <textarea id="editComments" rows="3"></textarea>
+                </div>
+
+                <button type="submit" class="btn-save">Enregistrer</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
